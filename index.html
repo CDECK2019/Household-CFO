@@ -4,21 +4,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Household CFO | Financial Intelligence</title>
+    <title>Homeland CFO | Financial Intelligence</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --emerald-vibrant: #10b981;
+            --border-resting: rgba(16, 185, 129, 0.25);
+        }
+
+        @keyframes heart-throb-glow {
+            0%, 100% { 
+                box-shadow: 0 0 15px rgba(16, 185, 129, 0.05); 
+                border-color: var(--border-resting);
+            }
+            45%, 55% { 
+                box-shadow: 0 0 45px rgba(16, 185, 129, 0.45); 
+                border-color: rgba(16, 185, 129, 0.8);
+            }
+        }
+
+        @keyframes dashboard-glow {
+            0%, 100% { 
+                box-shadow: 0 0 5px rgba(16, 185, 129, 0.1), inset 0 0 5px rgba(16, 185, 129, 0.05);
+            }
+            50% { 
+                box-shadow: 0 0 20px rgba(16, 185, 129, 0.3), inset 0 0 10px rgba(16, 185, 129, 0.2);
+            }
+        }
+
+        .glow-dashboard {
+            animation: dashboard-glow 4s infinite ease-in-out;
+        }
+
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f0f4f2;
+            background-color: #f8faf9;
+            overflow-x: hidden;
         }
-        .glass-card {
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(209, 213, 219, 0.3);
+
+        .throb-container {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(25px);
+            border: 1px solid var(--border-resting);
+            animation: heart-throb-glow 6s infinite ease-in-out;
         }
+
         /* Hide number input spinners */
         input::-webkit-outer-spin-button,
         input::-webkit-inner-spin-button {
@@ -27,6 +60,16 @@
         }
         input[type=number] {
             -moz-appearance: textfield;
+        }
+
+        .ambient-glow {
+            position: fixed;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(16, 185, 129, 0.12) 0%, rgba(16, 185, 129, 0) 70%);
+            filter: blur(80px);
+            pointer-events: none;
+            z-index: 0;
         }
     </style>
 <script type="importmap">
@@ -41,8 +84,12 @@
   }
 }
 </script>
+<link rel="stylesheet" href="/index.css">
 </head>
 <body>
+    <div class="ambient-glow top-[-10%] right-[-10%]"></div>
+    <div class="ambient-glow bottom-[-10%] left-[20%]"></div>
     <div id="root"></div>
+<script type="module" src="/index.tsx"></script>
 </body>
 </html>

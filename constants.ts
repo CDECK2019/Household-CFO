@@ -30,9 +30,19 @@ const INITIAL_MEMBER: HouseholdMember = {
 
 export const INITIAL_HOUSEHOLD_DATA: HouseholdData = {
   state: 'California',
+  zipCode: '90210',
   maritalStatus: MaritalStatus.SINGLE,
+  age: 35,
+  numAdults: 1,
   annualIncome: 85000,
   monthlyExpenses: 4250,
+  houseCharacteristics: {
+    ownership: 'Rent',
+    squareFootage: 1200,
+    isInsulated: true,
+    primaryHeatingSource: 'Gas',
+    hasGasAppliances: true
+  },
   healthInsurance: {
     planType: 'PPO',
     monthlyPremium: 200,
@@ -54,11 +64,27 @@ export const INITIAL_HOUSEHOLD_DATA: HouseholdData = {
     realEstate: 0,
     investments: 10000,
     pension: 0,
+    vehicleEquity: 0,
   },
+  customAssets: [],
   debts: {
     mortgage: 0,
     studentLoans: 15000,
     creditCards: 1200,
     other: 0,
+    vehicleDebt: 0,
   },
+  customDebts: [],
+  portfolio: [
+    {
+      id: 'acc-1',
+      name: 'Primary 401k',
+      type: '401k',
+      securities: [
+        { id: 'sec-1', symbol: 'VTI', name: 'Vanguard Total Stock Market', shares: 100, price: 250, value: 25000, type: 'ETF' },
+        { id: 'sec-2', symbol: 'BND', name: 'Vanguard Total Bond Market', shares: 50, price: 100, value: 5000, type: 'Bond' }
+      ]
+    }
+  ],
+  onboardingComplete: false,
 };

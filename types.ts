@@ -11,6 +11,7 @@ export interface Child {
   age: number;
   isDependent: boolean;
   isEmployed: boolean;
+  fullCustody: boolean;
 }
 
 export interface BudgetCategory {
@@ -35,9 +36,19 @@ export interface HouseholdMember {
 
 export interface HouseholdData {
   state: string;
+  zipCode: string;
   maritalStatus: MaritalStatus;
+  age: number;
+  numAdults: number;
   annualIncome: number;
   monthlyExpenses: number;
+  houseCharacteristics: {
+    ownership: 'Rent' | 'Own';
+    squareFootage: number;
+    isInsulated: boolean;
+    primaryHeatingSource: 'Gas' | 'Electric' | 'Oil' | 'Other';
+    hasGasAppliances: boolean;
+  };
   healthInsurance: {
     planType: 'PPO' | 'HDHP' | 'HMO' | 'None';
     monthlyPremium: number;
@@ -59,13 +70,36 @@ export interface HouseholdData {
     realEstate: number;
     investments: number;
     pension: number;
+    vehicleEquity: number;
   };
+  customAssets: { id: string; name: string; amount: number }[];
   debts: {
     mortgage: number;
     studentLoans: number;
     creditCards: number;
     other: number;
+    vehicleDebt: number;
   };
+  customDebts: { id: string; name: string; amount: number }[];
+  portfolio: InvestmentAccount[];
+  onboardingComplete: boolean;
+}
+
+export interface Security {
+  id: string;
+  symbol: string;
+  name: string;
+  shares: number;
+  price: number;
+  value: number;
+  type: 'Stock' | 'Bond' | 'ETF' | 'Mutual Fund' | 'Crypto' | 'Cash' | 'Other';
+}
+
+export interface InvestmentAccount {
+  id: string;
+  name: string;
+  type: '401k' | 'Roth IRA' | 'Traditional IRA' | 'Brokerage' | 'HSA' | '529' | 'Other';
+  securities: Security[];
 }
 
 export interface Recommendation {
@@ -84,6 +118,13 @@ export interface ResilienceFactor {
   description: string;
 }
 
+export interface DeepInsight {
+  category: 'Investment' | 'Tax' | 'Personal Finance' | 'Estate Planning' | 'Risk Management';
+  title: string;
+  content: string;
+  impact: string;
+}
+
 export interface AnalysisResponse {
   summary: string;
   netWorth: number;
@@ -92,4 +133,5 @@ export interface AnalysisResponse {
   resilienceScore: number; // 0-100
   resilienceFactors: ResilienceFactor[];
   recommendations: Recommendation[];
+  deepInsights?: DeepInsight[];
 }
