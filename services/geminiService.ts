@@ -3,7 +3,7 @@ import { GoogleGenAI, Type, ThinkingLevel } from "@google/genai";
 import { HouseholdData, AnalysisResponse, DeepInsight } from "../types";
 
 export const analyzeHouseholdFinances = async (data: HouseholdData): Promise<AnalysisResponse> => {
-  const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+  const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
   
   const budgetSummary = data.budget.map(b => `${b.name}: $${b.amount}/mo`).join(', ');
   
@@ -114,7 +114,7 @@ export const analyzeHouseholdFinances = async (data: HouseholdData): Promise<Ana
 };
 
 export const startAdvisorChat = async (data: HouseholdData, analysis: AnalysisResponse | null) => {
-  const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+  const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
   
   const budgetSummary = data.budget.map(b => `${b.name}: $${b.amount}/mo`).join(', ');
   const incomeSummary = data.incomeMembers.map(m => {
@@ -169,7 +169,7 @@ export const startAdvisorChat = async (data: HouseholdData, analysis: AnalysisRe
 };
 
 export const categorizeExpenses = async (expenses: { description: string, amount: number }[], currentCategories: string[]): Promise<any[]> => {
-  const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+  const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
   
   const prompt = `
     I have a list of expenses from a CSV file. Please categorize and aggregate them into the following budget categories: [${currentCategories.join(', ')}]. 
@@ -212,7 +212,7 @@ export const categorizeExpenses = async (expenses: { description: string, amount
 };
 
 export const generateDeepInsights = async (data: HouseholdData, analysis: AnalysisResponse): Promise<DeepInsight[]> => {
-  const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+  const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
   
   const prompt = `
     As a world-class Homeland CFO, provide 5-7 "Deep Insights" for this household based on their profile and previous analysis.
