@@ -168,7 +168,17 @@ const App: React.FC = () => {
 
   // Formatting helpers for monetary inputs
   const formatMoney = (val: number) => {
-    return val === 0 ? "" : val.toLocaleString();
+    return val === 0 ? "" : val.toLocaleString(undefined, {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+  };
+
+  const formatCurrency = (val: number) => {
+    return val.toLocaleString(undefined, {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
   };
 
   const parseMoney = (val: string) => {
@@ -1178,7 +1188,7 @@ const App: React.FC = () => {
                       </div>
                       <div className="text-right">
                         <div className="text-[10px] font-bold text-slate-400 uppercase mb-1">Monthly Burn</div>
-                        <div className="text-2xl font-black text-emerald-600 tracking-tight">${data.monthlyExpenses.toLocaleString()}</div>
+                        <div className="text-2xl font-black text-emerald-600 tracking-tight">${formatCurrency(data.monthlyExpenses)}</div>
                       </div>
                     </div>
                     <div className="space-y-4">
@@ -1652,14 +1662,14 @@ const App: React.FC = () => {
                 <div className="space-y-4 md:space-y-5">
                   <div className="p-5 md:p-6 bg-emerald-50 rounded-2xl border border-emerald-100">
                     <div className="text-[9px] md:text-[10px] font-bold text-emerald-600 uppercase mb-2 tracking-widest">Total Gross Income</div>
-                    <div className="text-2xl md:text-3xl font-black text-slate-900 tracking-tight">${data.annualIncome.toLocaleString()}</div>
+                    <div className="text-2xl md:text-3xl font-black text-slate-900 tracking-tight">${formatCurrency(data.annualIncome)}</div>
                     <button onClick={() => setActiveTab('income')} className="text-[10px] md:text-xs text-emerald-600 hover:text-emerald-700 mt-4 flex items-center gap-1 font-bold transition-colors uppercase tracking-widest">
                       Refine Streams <ArrowRightLeft className="w-3 h-3" />
                     </button>
                   </div>
                   <div className="p-5 md:p-6 bg-slate-50 rounded-2xl border border-slate-100">
                     <div className="text-[9px] md:text-[10px] font-bold text-slate-500 uppercase mb-2 tracking-widest">Monthly Budgeted</div>
-                    <div className="text-2xl md:text-3xl font-black text-slate-900 tracking-tight">${data.monthlyExpenses.toLocaleString()}</div>
+                    <div className="text-2xl md:text-3xl font-black text-slate-900 tracking-tight">${formatCurrency(data.monthlyExpenses)}</div>
                     <button onClick={() => setActiveTab('cashflow')} className="text-[10px] md:text-xs text-emerald-600 hover:text-emerald-700 mt-4 flex items-center gap-1 font-bold transition-colors uppercase tracking-widest">
                       Adjust Budget <ArrowRightLeft className="w-3 h-3" />
                     </button>
@@ -1986,7 +1996,7 @@ const App: React.FC = () => {
                 </h3>
                 <div className="text-right">
                   <div className="text-[10px] font-bold text-slate-400 uppercase mb-1">Total Annual</div>
-                  <div className="text-3xl font-black text-emerald-600 tracking-tight">${data.annualIncome.toLocaleString()}</div>
+                  <div className="text-3xl font-black text-emerald-600 tracking-tight">${formatCurrency(data.annualIncome)}</div>
                 </div>
               </div>
 
@@ -2105,7 +2115,7 @@ const App: React.FC = () => {
                 </div>
                 <div className="text-left md:text-right">
                   <div className="text-[10px] font-bold text-slate-400 uppercase mb-1">Monthly Burn</div>
-                  <div className="text-3xl font-black text-emerald-600 tracking-tight">${data.monthlyExpenses.toLocaleString()}</div>
+                  <div className="text-3xl font-black text-emerald-600 tracking-tight">${formatCurrency(data.monthlyExpenses)}</div>
                 </div>
               </div>
 
@@ -2140,7 +2150,7 @@ const App: React.FC = () => {
                         </div>
                         <div className="text-right">
                           <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none mb-1 block">Amount</span>
-                          <span className="text-sm font-black text-emerald-600">${item.amount.toLocaleString()}</span>
+                          <span className="text-sm font-black text-emerald-600">${formatCurrency(item.amount)}</span>
                         </div>
                       </div>
                     ))}
@@ -2205,7 +2215,7 @@ const App: React.FC = () => {
                 <div className="text-right">
                   <div className="text-[10px] font-bold text-slate-400 uppercase mb-1">Total Portfolio Value</div>
                   <div className="text-3xl font-black text-emerald-600 tracking-tight">
-                    ${data.portfolio.reduce((sum, acc) => sum + acc.securities.reduce((sSum, sec) => sSum + sec.value, 0), 0).toLocaleString()}
+                    ${formatCurrency(data.portfolio.reduce((sum, acc) => sum + acc.securities.reduce((sSum, sec) => sSum + sec.value, 0), 0))}
                   </div>
                 </div>
               </div>
@@ -2239,7 +2249,7 @@ const App: React.FC = () => {
                         <div className="text-right mr-4">
                           <div className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Account Value</div>
                           <div className="text-lg font-black text-slate-700">
-                            ${account.securities.reduce((sum, s) => sum + s.value, 0).toLocaleString()}
+                            ${formatCurrency(account.securities.reduce((sum, s) => sum + s.value, 0))}
                           </div>
                         </div>
                         <button 
@@ -2316,7 +2326,7 @@ const App: React.FC = () => {
                           </div>
                           <div className="col-span-2 flex items-center justify-between gap-2">
                             <div className="text-xs font-black text-slate-800 flex-1 text-right">
-                              ${security.value.toLocaleString()}
+                              ${formatCurrency(security.value)}
                             </div>
                             <button 
                               onClick={() => removeSecurity(account.id, security.id)}
@@ -2407,7 +2417,7 @@ const App: React.FC = () => {
 
               <div className={`${cardClass} ${isMobile ? 'p-6' : 'p-8'}`}>
                 <div className="text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-4">Household Equity</div>
-                <div className="text-3xl md:text-4xl font-black text-slate-900 tracking-tight">${(analysis ? analysis.netWorth : (totalAssets - totalLiabilities)).toLocaleString()}</div>
+                <div className="text-3xl md:text-4xl font-black text-slate-900 tracking-tight">${formatCurrency(analysis ? analysis.netWorth : (totalAssets - totalLiabilities))}</div>
                 <div className="mt-6 text-[10px] text-emerald-600 flex items-center gap-2 font-black bg-emerald-50 px-4 py-2 rounded-full w-fit uppercase tracking-widest">
                   <TrendingUp className="w-4 h-4" /> Growth Path
                 </div>
@@ -2416,7 +2426,7 @@ const App: React.FC = () => {
               <div className={`${cardClass} ${isMobile ? 'p-6' : 'p-8'}`}>
                 <div className="text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-4">Debt Exposure</div>
                 <div className="text-3xl md:text-4xl font-black text-slate-900 tracking-tight">
-                  {analysis ? (analysis.debtToIncomeRatio * 100).toFixed(1) : (data.annualIncome > 0 ? ((totalLiabilities / data.annualIncome) * 100).toFixed(1) : '0.0')}%
+                  {analysis ? (analysis.debtToIncomeRatio * 100).toFixed(2) : (data.annualIncome > 0 ? ((totalLiabilities / data.annualIncome) * 100).toFixed(2) : '0.00')}%
                 </div>
                 <div className={`mt-6 text-[10px] flex items-center gap-2 font-black px-4 py-2 rounded-full w-fit uppercase tracking-widest ${
                   (analysis ? analysis.debtToIncomeRatio : (data.annualIncome > 0 ? totalLiabilities / data.annualIncome : 0)) < 0.36 ? 'bg-emerald-50 text-emerald-600' : 'bg-red-50 text-red-600'
@@ -2428,7 +2438,7 @@ const App: React.FC = () => {
               <div className={`${cardClass} ${isMobile ? 'p-6' : 'p-8'}`}>
                 <div className="text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-4">Monthly Surplus</div>
                 <div className={`text-3xl md:text-4xl font-black tracking-tight ${monthlySurplus >= 0 ? 'text-emerald-600' : 'text-red-600'}`}>
-                  ${monthlySurplus.toLocaleString()}
+                  ${formatCurrency(monthlySurplus)}
                 </div>
                 <div className={`mt-6 text-[10px] font-black px-4 py-2 rounded-full w-fit uppercase tracking-widest ${monthlySurplus >= 0 ? 'bg-emerald-50 text-emerald-600' : 'bg-red-50 text-red-600'}`}>
                    {monthlySurplus >= 0 ? 'Positive Cash Flow' : 'Deficit Spending'}
@@ -2440,7 +2450,7 @@ const App: React.FC = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 md:gap-8">
               <div className={`${cardClass} ${isMobile ? 'p-6' : 'p-8'}`}>
                 <div className="text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-4">Savings Velocity</div>
-                <div className="text-3xl md:text-4xl font-black text-slate-900 tracking-tight">{savingsRate.toFixed(1)}%</div>
+                <div className="text-3xl md:text-4xl font-black text-slate-900 tracking-tight">{savingsRate.toFixed(2)}%</div>
                 <div className="mt-4 h-2 bg-slate-100 rounded-full overflow-hidden">
                   <div className="h-full bg-emerald-500" style={{ width: `${Math.min(savingsRate * 5, 100)}%` }} />
                 </div>
@@ -2449,7 +2459,7 @@ const App: React.FC = () => {
 
               <div className={`${cardClass} ${isMobile ? 'p-6' : 'p-8'}`}>
                 <div className="text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-4">Emergency Coverage</div>
-                <div className="text-3xl md:text-4xl font-black text-slate-900 tracking-tight">{emergencyFundMonths.toFixed(1)} <span className="text-lg md:text-xl text-slate-400">Months</span></div>
+                <div className="text-3xl md:text-4xl font-black text-slate-900 tracking-tight">{emergencyFundMonths.toFixed(2)} <span className="text-lg md:text-xl text-slate-400">Months</span></div>
                 <div className="mt-4 h-2 bg-slate-100 rounded-full overflow-hidden">
                   <div className="h-full bg-blue-500" style={{ width: `${Math.min(emergencyFundMonths * 16.6, 100)}%` }} />
                 </div>
@@ -2513,7 +2523,7 @@ const App: React.FC = () => {
                           ))}
                         </Pie>
                         <Tooltip 
-                          formatter={(value: number) => [new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(value), 'Value']}
+                          formatter={(value: number) => [new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(value), 'Value']}
                           contentStyle={{ backgroundColor: '#fff', borderRadius: '24px', border: '1px solid #f1f5f9', padding: '16px', color: '#1e293b' }}
                         />
                       </RePieChart>
@@ -2542,7 +2552,7 @@ const App: React.FC = () => {
                       <XAxis type="number" hide />
                       <YAxis dataKey="name" type="category" width={isMobile ? 80 : 100} axisLine={false} tickLine={false} tick={{ fontSize: 9, fontWeight: 900, fill: '#64748b' }} />
                       <Tooltip 
-                        formatter={(value: number) => [new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(value), 'Value']}
+                        formatter={(value: number) => [new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(value), 'Value']}
                         cursor={{ fill: '#f8fafc' }}
                         contentStyle={{ backgroundColor: '#fff', borderRadius: '16px', border: '1px solid #f1f5f9', padding: '12px' }}
                       />
@@ -2567,10 +2577,10 @@ const App: React.FC = () => {
                         axisLine={false} 
                         tickLine={false} 
                         tick={{ fontSize: 10, fontWeight: 900, fill: '#64748b' }} 
-                        tickFormatter={(value) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(value)}
+                        tickFormatter={(value) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(value)}
                       />
                       <Tooltip 
-                        formatter={(value: number) => [new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(value), 'Value']}
+                        formatter={(value: number) => [new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(value), 'Value']}
                         cursor={{ fill: '#f8fafc' }}
                         contentStyle={{ backgroundColor: '#fff', borderRadius: '16px', border: '1px solid #f1f5f9', padding: '12px' }}
                       />

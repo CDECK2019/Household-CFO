@@ -57,6 +57,9 @@ export const analyzeHouseholdFinances = async (data: HouseholdData): Promise<Ana
        - Consider spousal benefits, age-related tax breaks, and child-related tax credits (CTC, EITC).
        - Note: Full custody status significantly impacts eligibility for Head of Household status and various credits.
        - Include energy efficiency upgrades or utility assistance programs if anomalies are detected.
+
+    IMPORTANT FORMATTING RULE:
+    All monetary values in your response (especially in "estimatedImpact" and "summary") MUST be formatted as currency with exactly two decimal places (e.g., $1,250.00, $0.50).
   `;
 
   const response = await ai.models.generateContent({
@@ -155,6 +158,7 @@ export const startAdvisorChat = async (data: HouseholdData, analysis: AnalysisRe
     3. Maintain a tactical, sophisticated, yet accessible tone. Use terms like "Capital Allocation", "Savings Velocity", and "Tax Alpha".
     4. Provide actionable steps for every piece of advice.
     5. If asked about children, focus on long-term wealth transfer and education optimization. Take 'Full Custody' status into account for custodial accounts and tax filing eligibility.
+    6. MANDATORY FORMATTING: All monetary values in your responses MUST be formatted as currency with exactly two decimal places (e.g., $1,250.00, $0.50).
     
     Always act as a partner in their financial resilience.
   `;
@@ -235,6 +239,9 @@ export const generateDeepInsights = async (data: HouseholdData, analysis: Analys
     4. Estate Planning: Beneficiary nuances, trust considerations (if applicable), or wealth transfer.
     5. Risk Management: Insurance gaps, liability exposure, or emergency scenario planning.
     
+    IMPORTANT FORMATTING RULE:
+    All monetary values in your response (especially in "impact") MUST be formatted as currency with exactly two decimal places (e.g., $1,250.00, $0.50).
+
     Return a JSON array of objects:
     {
       "category": "Investment" | "Tax" | "Personal Finance" | "Estate Planning" | "Risk Management",
