@@ -655,7 +655,7 @@ const App: React.FC = () => {
   };
 
   const nextOnboardingStep = () => {
-    if (onboardingStep < 8) {
+    if (onboardingStep < 9) {
       setOnboardingStep(prev => prev + 1);
     } else {
       completeOnboarding();
@@ -767,39 +767,102 @@ const App: React.FC = () => {
               <div className="w-full max-w-md mx-auto h-2 bg-slate-100 rounded-full mb-8 overflow-hidden">
                 <div 
                   className="h-full bg-emerald-500 transition-all duration-500 ease-out"
-                  style={{ width: `${((onboardingStep + 1) / 9) * 100}%` }}
+                  style={{ width: `${((onboardingStep + 1) / 10) * 100}%` }}
                 />
               </div>
 
               <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-emerald-50 text-emerald-600 rounded-full text-[10px] font-black uppercase tracking-widest mb-6 border border-emerald-100">
-                <Sparkles className="w-3.5 h-3.5" /> Step {onboardingStep + 1} of 9
+                <Sparkles className="w-3.5 h-3.5" /> Step {onboardingStep + 1} of 10
               </div>
               <h2 className="text-5xl font-black text-slate-900 tracking-tight mb-4">
-                {onboardingStep === 0 ? 'Demographics & Location' :
-                 onboardingStep === 1 ? 'Housing Characteristics' :
-                 onboardingStep === 2 ? 'Health Insurance' :
-                 onboardingStep === 3 ? 'Retirement Contributions' :
-                 onboardingStep === 4 ? 'Household Income' :
-                 onboardingStep === 5 ? 'Monthly Expenses' :
-                 onboardingStep === 6 ? 'Current Assets' :
-                 onboardingStep === 7 ? 'Current Liabilities' :
+                {onboardingStep === 0 ? 'Welcome to Homeland CFO' :
+                 onboardingStep === 1 ? 'Demographics & Location' :
+                 onboardingStep === 2 ? 'Housing Characteristics' :
+                 onboardingStep === 3 ? 'Health Insurance' :
+                 onboardingStep === 4 ? 'Retirement Contributions' :
+                 onboardingStep === 5 ? 'Household Income' :
+                 onboardingStep === 6 ? 'Monthly Expenses' :
+                 onboardingStep === 7 ? 'Current Assets' :
+                 onboardingStep === 8 ? 'Current Liabilities' :
                  'Investment Portfolio'}
               </h2>
               <p className="text-slate-500 font-medium text-xl max-w-2xl mx-auto">
-                {onboardingStep === 0 ? "Let's start with the basics of your household." :
-                 onboardingStep === 1 ? 'Tell us about your physical living environment.' :
-                 onboardingStep === 2 ? 'Your health strategy is a key part of your financial CFO plan.' :
-                 onboardingStep === 3 ? 'How are you currently preparing for the long-term?' :
-                 onboardingStep === 4 ? 'Track every income stream across all household members.' :
-                 onboardingStep === 5 ? 'What does your typical monthly burn look like?' :
-                 onboardingStep === 6 ? 'What do you currently own?' :
-                 onboardingStep === 7 ? 'What are your current financial obligations?' :
+                {onboardingStep === 0 ? "Bringing the tools of the most financially sophisticated to everyone." :
+                 onboardingStep === 1 ? "Let's start with the basics of your household." :
+                 onboardingStep === 2 ? 'Tell us about your physical living environment.' :
+                 onboardingStep === 3 ? 'Your health strategy is a key part of your financial CFO plan.' :
+                 onboardingStep === 4 ? 'How are you currently preparing for the long-term?' :
+                 onboardingStep === 5 ? 'Track every income stream across all household members.' :
+                 onboardingStep === 6 ? 'What does your typical monthly burn look like?' :
+                 onboardingStep === 7 ? 'What do you currently own?' :
+                 onboardingStep === 8 ? 'What are your current financial obligations?' :
                  'Granular security-level tracking of your investments.'}
               </p>
             </div>
 
             <div className="animate-in fade-in zoom-in-95 duration-700">
               {onboardingStep === 0 && (
+                <section className={`${cardClass} shadow-[0_30px_100px_-20px_rgba(16,185,129,0.15)] border border-emerald-50 bg-white p-10 md:p-16`}>
+                  <div className="max-w-3xl mx-auto text-center">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+                      <div className="p-6 bg-slate-50 rounded-[32px] border border-slate-100">
+                        <div className="w-12 h-12 bg-emerald-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                          <BrainCircuit className="w-6 h-6 text-emerald-600" />
+                        </div>
+                        <h4 className="font-black text-slate-900 uppercase tracking-tighter mb-2">CFO Intelligence</h4>
+                        <p className="text-xs text-slate-500 font-medium leading-relaxed">Advanced analytics and strategy usually reserved for high-net-worth individuals.</p>
+                      </div>
+                      <div className="p-6 bg-slate-50 rounded-[32px] border border-slate-100">
+                        <div className="w-12 h-12 bg-blue-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                          <ShieldCheck className="w-6 h-6 text-blue-600" />
+                        </div>
+                        <h4 className="font-black text-slate-900 uppercase tracking-tighter mb-2">Resilience Scoring</h4>
+                        <p className="text-xs text-slate-500 font-medium leading-relaxed">Stress-test your household against economic shocks with our proprietary grading system.</p>
+                      </div>
+                      <div className="p-6 bg-slate-50 rounded-[32px] border border-slate-100">
+                        <div className="w-12 h-12 bg-amber-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                          <Target className="w-6 h-6 text-amber-600" />
+                        </div>
+                        <h4 className="font-black text-slate-900 uppercase tracking-tighter mb-2">Tactical Advice</h4>
+                        <p className="text-xs text-slate-500 font-medium leading-relaxed">Personalized recommendations for tax optimization, benefits, and wealth building.</p>
+                      </div>
+                    </div>
+                    
+                    <div className="bg-emerald-50/50 p-8 rounded-[32px] border border-emerald-100 text-left mb-8">
+                      <h4 className="text-emerald-900 font-black uppercase tracking-widest text-xs mb-4">The Onboarding Process</h4>
+                      <ul className="space-y-4">
+                        <li className="flex items-start gap-4">
+                          <div className="w-6 h-6 rounded-full bg-emerald-600 text-white text-[10px] font-black flex items-center justify-center flex-shrink-0 mt-0.5">1</div>
+                          <div>
+                            <p className="text-sm font-bold text-slate-800">Profile Capture</p>
+                            <p className="text-xs text-slate-500 font-medium">We'll ask about your demographics, housing, and health insurance to build your baseline.</p>
+                          </div>
+                        </li>
+                        <li className="flex items-start gap-4">
+                          <div className="w-6 h-6 rounded-full bg-emerald-600 text-white text-[10px] font-black flex items-center justify-center flex-shrink-0 mt-0.5">2</div>
+                          <div>
+                            <p className="text-sm font-bold text-slate-800">Financial Mapping</p>
+                            <p className="text-xs text-slate-500 font-medium">Input your income streams, expenses, assets, and liabilities for a full balance sheet view.</p>
+                          </div>
+                        </li>
+                        <li className="flex items-start gap-4">
+                          <div className="w-6 h-6 rounded-full bg-emerald-600 text-white text-[10px] font-black flex items-center justify-center flex-shrink-0 mt-0.5">3</div>
+                          <div>
+                            <p className="text-sm font-bold text-slate-800">CFO Activation</p>
+                            <p className="text-xs text-slate-500 font-medium">Once complete, our AI CFO analyzes your data to generate your first strategic action plan.</p>
+                          </div>
+                        </li>
+                      </ul>
+                    </div>
+                    
+                    <p className="text-slate-400 text-xs font-medium italic">
+                      Your data is stored locally in your browser. We never sell your personal financial information.
+                    </p>
+                  </div>
+                </section>
+              )}
+
+              {onboardingStep === 1 && (
                 <section className={`${cardClass} shadow-[0_30px_100px_-20px_rgba(16,185,129,0.15)] border border-emerald-50 bg-white`}>
                   <div className="space-y-8">
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
@@ -870,7 +933,7 @@ const App: React.FC = () => {
                 </section>
               )}
 
-              {onboardingStep === 1 && (
+              {onboardingStep === 2 && (
                 <section className={`${cardClass} shadow-[0_30px_100px_-20px_rgba(16,185,129,0.15)] border border-emerald-50 bg-white`}>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                     <div>
@@ -946,7 +1009,7 @@ const App: React.FC = () => {
                 </section>
               )}
 
-              {onboardingStep === 2 && (
+              {onboardingStep === 3 && (
                 <section className={`${cardClass} shadow-[0_30px_100px_-20px_rgba(16,185,129,0.15)] border border-emerald-50 bg-white`}>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                     <div>
@@ -990,7 +1053,7 @@ const App: React.FC = () => {
                 </section>
               )}
 
-              {onboardingStep === 3 && (
+              {onboardingStep === 4 && (
                 <section className={`${cardClass} shadow-[0_30px_100px_-20px_rgba(16,185,129,0.15)] border border-emerald-50 bg-white`}>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                     <div>
@@ -1034,7 +1097,7 @@ const App: React.FC = () => {
                 </section>
               )}
 
-              {onboardingStep === 4 && (
+              {onboardingStep === 5 && (
                 <div className="space-y-6 animate-in fade-in zoom-in-95 duration-700">
                   {data.incomeMembers.map((member) => (
                     <div key={member.id} className={`${cardClass} bg-white shadow-[0_30px_100px_-20px_rgba(16,185,129,0.15)] border border-emerald-50`}>
@@ -1102,7 +1165,7 @@ const App: React.FC = () => {
                 </div>
               )}
 
-              {onboardingStep === 5 && (
+              {onboardingStep === 6 && (
                 <div className="space-y-6 animate-in fade-in zoom-in-95 duration-700">
                   <section className={`${cardClass} bg-white shadow-[0_30px_100px_-20px_rgba(16,185,129,0.15)] border border-emerald-50`}>
                     <div className="flex justify-between items-center mb-8">
@@ -1159,7 +1222,7 @@ const App: React.FC = () => {
                 </div>
               )}
 
-              {onboardingStep === 6 && (
+              {onboardingStep === 7 && (
                 <section className={`${cardClass} bg-white shadow-[0_30px_100px_-20px_rgba(16,185,129,0.15)] border border-emerald-50`}>
                   <div className="flex justify-between items-center mb-8">
                     <h3 className="text-lg font-bold text-slate-800">Assets</h3>
@@ -1212,7 +1275,7 @@ const App: React.FC = () => {
                 </section>
               )}
 
-              {onboardingStep === 7 && (
+              {onboardingStep === 8 && (
                 <section className={`${cardClass} bg-white shadow-[0_30px_100px_-20px_rgba(16,185,129,0.15)] border border-emerald-50`}>
                   <div className="flex justify-between items-center mb-8">
                     <h3 className="text-lg font-bold text-slate-800">Liabilities</h3>
@@ -1263,7 +1326,7 @@ const App: React.FC = () => {
                 </section>
               )}
 
-              {onboardingStep === 8 && (
+              {onboardingStep === 9 && (
                 <div className="space-y-6 animate-in fade-in zoom-in-95 duration-700">
                   {data.portfolio.map((account) => (
                     <div key={account.id} className={`${cardClass} bg-white shadow-[0_30px_100px_-20px_rgba(16,185,129,0.15)] border border-emerald-50`}>
@@ -1355,7 +1418,7 @@ const App: React.FC = () => {
                 onClick={nextOnboardingStep}
                 className="px-12 py-4 bg-emerald-600 text-white rounded-2xl font-black uppercase tracking-widest text-xs shadow-xl shadow-emerald-200 hover:scale-105 active:scale-95 transition-all flex items-center gap-3"
               >
-                {onboardingStep === 8 ? 'Complete Setup' : 'Continue'}
+                {onboardingStep === 0 ? 'Get Started' : onboardingStep === 9 ? 'Complete Setup' : 'Continue'}
                 <ChevronRight className="w-4 h-4" />
               </button>
             </div>
