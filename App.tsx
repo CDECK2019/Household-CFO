@@ -54,6 +54,64 @@ interface ChatMessage {
   text: string;
 }
 
+// Formatting helpers for monetary inputs
+const formatMoney = (val: number) => {
+  return val === 0 ? "" : val.toLocaleString(undefined, {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+};
+
+const formatCurrency = (val: number) => {
+  return val.toLocaleString(undefined, {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+};
+
+const parseMoney = (val: string) => {
+  const clean = val.replace(/,/g, '');
+  const num = parseFloat(clean);
+  return isNaN(num) ? 0 : num;
+};
+
+const MoneyInput = ({ value, onChange, className, disabled, placeholder }: { value: number, onChange: (val: number) => void, className?: string, disabled?: boolean, placeholder?: string }) => {
+  const [displayValue, setDisplayValue] = useState(formatMoney(value));
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (document.activeElement !== inputRef.current) {
+      setDisplayValue(formatMoney(value));
+    }
+  }, [value]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = e.target.value;
+    if (/^[0-9,.]*$/.test(val)) {
+      setDisplayValue(val);
+      const num = parseMoney(val);
+      onChange(num);
+    }
+  };
+
+  const handleBlur = () => {
+    setDisplayValue(formatMoney(value));
+  };
+
+  return (
+    <input 
+      ref={inputRef}
+      type="text"
+      value={displayValue}
+      onChange={handleChange}
+      onBlur={handleBlur}
+      className={className}
+      disabled={disabled}
+      placeholder={placeholder}
+    />
+  );
+};
+
 const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'dashboard' | 'profile' | 'income' | 'cashflow' | 'analysis' | 'advisor' | 'portfolio'>(() => {
     const saved = localStorage.getItem('homeland_cfo_active_tab');
@@ -165,27 +223,6 @@ const App: React.FC = () => {
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
-
-  // Formatting helpers for monetary inputs
-  const formatMoney = (val: number) => {
-    return val === 0 ? "" : val.toLocaleString(undefined, {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    });
-  };
-
-  const formatCurrency = (val: number) => {
-    return val.toLocaleString(undefined, {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    });
-  };
-
-  const parseMoney = (val: string) => {
-    const clean = val.replace(/,/g, '');
-    const num = parseFloat(clean);
-    return isNaN(num) ? 0 : num;
-  };
 
   const handleRunAnalysis = async () => {
     setLoading(true);
@@ -1039,10 +1076,9 @@ const App: React.FC = () => {
                       <label className={labelClass}>Monthly Premium</label>
                       <div className="relative">
                         <span className="absolute left-4 top-3 text-slate-400 text-sm font-bold">$</span>
-                        <input 
-                          type="text"
-                          value={formatMoney(data.healthInsurance.monthlyPremium)}
-                          onChange={(e) => setData({...data, healthInsurance: { ...data.healthInsurance, monthlyPremium: parseMoney(e.target.value) }})}
+                        <MoneyInput 
+                          value={data.healthInsurance.monthlyPremium}
+                          onChange={(val) => setData({...data, healthInsurance: { ...data.healthInsurance, monthlyPremium: val }})}
                           className={`${inputClass} pl-8`}
                         />
                       </div>
@@ -1051,10 +1087,9 @@ const App: React.FC = () => {
                       <label className={labelClass}>Employer Contribution</label>
                       <div className="relative">
                         <span className="absolute left-4 top-3 text-slate-400 text-sm font-bold">$</span>
-                        <input 
-                          type="text"
-                          value={formatMoney(data.healthInsurance.employerContribution)}
-                          onChange={(e) => setData({...data, healthInsurance: { ...data.healthInsurance, employerContribution: parseMoney(e.target.value) }})}
+                        <MoneyInput 
+                          value={data.healthInsurance.employerContribution}
+                          onChange={(val) => setData({...data, healthInsurance: { ...data.healthInsurance, employerContribution: val }})}
                           className={`${inputClass} pl-8`}
                         />
                       </div>
@@ -1070,10 +1105,9 @@ const App: React.FC = () => {
                       <label className={labelClass}>401(k) / 403(b) Annual</label>
                       <div className="relative">
                         <span className="absolute left-4 top-3 text-slate-400 text-sm font-bold">$</span>
-                        <input 
-                          type="text"
-                          value={formatMoney(data.contributions.k401Annual)}
-                          onChange={(e) => setData({...data, contributions: { ...data.contributions, k401Annual: parseMoney(e.target.value) }})}
+                        <MoneyInput 
+                          value={data.contributions.k401Annual}
+                          onChange={(val) => setData({...data, contributions: { ...data.contributions, k401Annual: val }})}
                           className={`${inputClass} pl-8`}
                         />
                       </div>
@@ -1082,10 +1116,9 @@ const App: React.FC = () => {
                       <label className={labelClass}>Roth IRA Annual</label>
                       <div className="relative">
                         <span className="absolute left-4 top-3 text-slate-400 text-sm font-bold">$</span>
-                        <input 
-                          type="text"
-                          value={formatMoney(data.contributions.rothIraAnnual)}
-                          onChange={(e) => setData({...data, contributions: { ...data.contributions, rothIraAnnual: parseMoney(e.target.value) }})}
+                        <MoneyInput 
+                          value={data.contributions.rothIraAnnual}
+                          onChange={(val) => setData({...data, contributions: { ...data.contributions, rothIraAnnual: val }})}
                           className={`${inputClass} pl-8`}
                         />
                       </div>
@@ -1094,11 +1127,10 @@ const App: React.FC = () => {
                       <label className={labelClass}>HSA Annual Contribution</label>
                       <div className="relative">
                         <span className="absolute left-4 top-3 text-slate-400 text-sm font-bold">$</span>
-                        <input 
-                          type="text"
+                        <MoneyInput 
                           disabled={!data.healthInsurance.hasHSA}
-                          value={formatMoney(data.contributions.hsaAnnual)}
-                          onChange={(e) => setData({...data, contributions: { ...data.contributions, hsaAnnual: parseMoney(e.target.value) }})}
+                          value={data.contributions.hsaAnnual}
+                          onChange={(val) => setData({...data, contributions: { ...data.contributions, hsaAnnual: val }})}
                           className={`${inputClass} pl-8 ${!data.healthInsurance.hasHSA ? 'opacity-30 cursor-not-allowed bg-slate-50' : ''}`}
                         />
                       </div>
@@ -1149,10 +1181,9 @@ const App: React.FC = () => {
                             </div>
                             <div className="md:col-span-4 relative">
                               <span className="absolute left-4 top-2.5 text-slate-400 text-sm font-bold">$</span>
-                              <input 
-                                type="text"
-                                value={formatMoney(source.amount)}
-                                onChange={(e) => updateIncomeSource(member.id, source.id, { amount: parseMoney(e.target.value) })}
+                              <MoneyInput 
+                                value={source.amount}
+                                onChange={(val) => updateIncomeSource(member.id, source.id, { amount: val })}
                                 className="w-full bg-white border border-slate-200 rounded-xl pl-8 pr-4 py-2.5 text-sm font-bold text-slate-800 focus:ring-2 focus:ring-emerald-500 outline-none"
                               />
                             </div>
@@ -1209,10 +1240,9 @@ const App: React.FC = () => {
                           <div className="flex items-center gap-3">
                             <div className="relative max-w-[150px]">
                               <span className="absolute left-4 top-2 text-slate-400 text-sm font-bold">$</span>
-                              <input 
-                                type="text"
-                                value={formatMoney(category.amount)}
-                                onChange={(e) => updateBudgetCategory(category.id, { amount: parseMoney(e.target.value) })}
+                              <MoneyInput 
+                                value={category.amount}
+                                onChange={(val) => updateBudgetCategory(category.id, { amount: val })}
                                 className="w-full bg-white border border-slate-200 rounded-xl pl-8 pr-4 py-2 text-sm font-bold text-slate-800 focus:ring-2 focus:ring-emerald-500 outline-none"
                               />
                             </div>
@@ -1248,10 +1278,9 @@ const App: React.FC = () => {
                         </label>
                         <div className="relative w-56">
                           <span className="absolute left-4 top-2.5 text-slate-400 text-sm font-bold">$</span>
-                          <input 
-                            type="text"
-                            value={formatMoney(data.assets[key as keyof typeof data.assets])}
-                            onChange={(e) => updateAsset(key as any, parseMoney(e.target.value))}
+                          <MoneyInput 
+                            value={data.assets[key as keyof typeof data.assets] as number}
+                            onChange={(val) => updateAsset(key as any, val)}
                             className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-8 pr-4 py-2.5 text-sm focus:ring-2 focus:ring-emerald-500 outline-none font-bold text-slate-800"
                           />
                         </div>
@@ -1268,10 +1297,9 @@ const App: React.FC = () => {
                         <div className="flex items-center gap-2">
                           <div className="relative w-56">
                             <span className="absolute left-4 top-2.5 text-slate-400 text-sm font-bold">$</span>
-                            <input 
-                              type="text"
-                              value={formatMoney(asset.amount)}
-                              onChange={(e) => updateCustomAsset(asset.id, { amount: parseMoney(e.target.value) })}
+                            <MoneyInput 
+                              value={asset.amount}
+                              onChange={(val) => updateCustomAsset(asset.id, { amount: val })}
                               className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-8 pr-4 py-2.5 text-sm focus:ring-2 focus:ring-emerald-500 outline-none font-bold text-slate-800"
                             />
                           </div>
@@ -1299,10 +1327,9 @@ const App: React.FC = () => {
                         <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest flex-1">{key.replace(/([A-Z])/g, ' $1')}</label>
                         <div className="relative w-56">
                           <span className="absolute left-4 top-2.5 text-slate-400 text-sm font-bold">$</span>
-                          <input 
-                            type="text"
-                            value={formatMoney(data.debts[key as keyof typeof data.debts])}
-                            onChange={(e) => updateDebt(key as any, parseMoney(e.target.value))}
+                          <MoneyInput 
+                            value={data.debts[key as keyof typeof data.debts] as number}
+                            onChange={(val) => updateDebt(key as any, val)}
                             className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-8 pr-4 py-2.5 text-sm focus:ring-2 focus:ring-emerald-500 outline-none font-bold text-slate-800"
                           />
                         </div>
@@ -1319,10 +1346,9 @@ const App: React.FC = () => {
                         <div className="flex items-center gap-2">
                           <div className="relative w-56">
                             <span className="absolute left-4 top-2.5 text-slate-400 text-sm font-bold">$</span>
-                            <input 
-                              type="text"
-                              value={formatMoney(debt.amount)}
-                              onChange={(e) => updateCustomDebt(debt.id, { amount: parseMoney(e.target.value) })}
+                            <MoneyInput 
+                              value={debt.amount}
+                              onChange={(val) => updateCustomDebt(debt.id, { amount: val })}
                               className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-8 pr-4 py-2.5 text-sm focus:ring-2 focus:ring-emerald-500 outline-none font-bold text-slate-800"
                             />
                           </div>
@@ -1389,10 +1415,9 @@ const App: React.FC = () => {
                             </div>
                             <div className="col-span-3 relative">
                               <span className="absolute left-2 top-2 text-slate-400 text-[10px] font-bold">$</span>
-                              <input 
-                                type="text"
-                                value={formatMoney(security.value)}
-                                onChange={(e) => updateSecurity(account.id, security.id, { value: parseMoney(e.target.value) })}
+                              <MoneyInput 
+                                value={security.value}
+                                onChange={(val) => updateSecurity(account.id, security.id, { value: val })}
                                 className="w-full bg-white border border-slate-200 rounded-xl pl-5 pr-2 py-2 text-xs font-bold text-slate-800 text-right focus:ring-2 focus:ring-emerald-500 outline-none"
                               />
                             </div>
@@ -1812,10 +1837,9 @@ const App: React.FC = () => {
                   <label className={labelClass}>401(k) / 403(b) Annual</label>
                   <div className="relative">
                     <span className="absolute left-4 top-3 text-slate-400 text-sm font-bold">$</span>
-                    <input 
-                      type="text"
-                      value={formatMoney(data.contributions.k401Annual)}
-                      onChange={(e) => setData({...data, contributions: { ...data.contributions, k401Annual: parseMoney(e.target.value) }})}
+                    <MoneyInput 
+                      value={data.contributions.k401Annual}
+                      onChange={(val) => setData({...data, contributions: { ...data.contributions, k401Annual: val }})}
                       className={`${inputClass} pl-8`}
                     />
                   </div>
@@ -1824,10 +1848,9 @@ const App: React.FC = () => {
                   <label className={labelClass}>Roth IRA Annual</label>
                   <div className="relative">
                     <span className="absolute left-4 top-3 text-slate-400 text-sm font-bold">$</span>
-                    <input 
-                      type="text"
-                      value={formatMoney(data.contributions.rothIraAnnual)}
-                      onChange={(e) => setData({...data, contributions: { ...data.contributions, rothIraAnnual: parseMoney(e.target.value) }})}
+                    <MoneyInput 
+                      value={data.contributions.rothIraAnnual}
+                      onChange={(val) => setData({...data, contributions: { ...data.contributions, rothIraAnnual: val }})}
                       className={`${inputClass} pl-8`}
                     />
                   </div>
@@ -1836,11 +1859,10 @@ const App: React.FC = () => {
                   <label className={labelClass}>HSA Annual Contribution</label>
                   <div className="relative">
                     <span className="absolute left-4 top-3 text-slate-400 text-sm font-bold">$</span>
-                    <input 
-                      type="text"
+                    <MoneyInput 
                       disabled={!data.healthInsurance.hasHSA}
-                      value={formatMoney(data.contributions.hsaAnnual)}
-                      onChange={(e) => setData({...data, contributions: { ...data.contributions, hsaAnnual: parseMoney(e.target.value) }})}
+                      value={data.contributions.hsaAnnual}
+                      onChange={(val) => setData({...data, contributions: { ...data.contributions, hsaAnnual: val }})}
                       className={`${inputClass} pl-8 ${!data.healthInsurance.hasHSA ? 'opacity-30 cursor-not-allowed bg-slate-50' : ''}`}
                     />
                   </div>
